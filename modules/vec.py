@@ -238,7 +238,16 @@ class Vec:
         numdec = 3
         wd = dict([(k,(1+max(len(str(k)), len('{0:.{1}G}'.format(v[k], numdec))))) if isinstance(v[k], int) or isinstance(v[k], float) else (k,(1+max(len(str(k)), len(str(v[k]))))) for k in D_list])
         s1 = ''.join(['{0:>{1}}'.format(str(k),wd[k]) for k in D_list])
-        s2 = ''.join(['{0:>{1}.{2}G}'.format(v[k],wd[k],numdec) if isinstance(v[k], int) or isinstance(v[k], float) else '{0:>{1}}'.format(v[k], wd[k]) for k in D_list])
+        # s2 = ''.join(['{0:>{1}.{2}G}'.format(v[k],wd[k],numdec) if isinstance(v[k], int) or isinstance(v[k], float) else '{0:>{1}}'.format(v[k], wd[k]) for k in D_list])
+        s2_array = []
+        for k in D_list:
+            if k not in v.f:
+                s2_array.append('{0:>{1}}'.format(0, wd[k]))
+            elif (isinstance(v.f[k], int) or isinstance(v.f[k], float)):
+                s2_array.append('{0:>{1}.{2}G}'.format(v.f[k], wd[k], numdec))
+            else:
+                s2_array.append('{0:>{1}}'.format(v.f[k],wd[k]))
+        s2 = ''.join(s2_array)
         return "\n" + s1 + "\n" + '-'*sum(wd.values()) +"\n" + s2
 
     def __hash__(self):
